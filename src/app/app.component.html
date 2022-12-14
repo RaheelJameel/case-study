@@ -1,2 +1,20 @@
-<app-order-detail></app-order-detail>
-<app-products></app-products>
+<div class="container">
+  <div class="main-page">
+    <mat-card class="left-card">
+      <mat-card-content>
+        <app-order-detail></app-order-detail>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="right-card">
+      <mat-card-content>
+        <app-products></app-products>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div class="footer">
+    <button mat-button class="align-right">Cancel</button>
+    <button mat-stroked-button>Save as a draft</button>
+    <button mat-raised-button color="primary">Complete Order</button>
+  </div>
+</div>
