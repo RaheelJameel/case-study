@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { ProductListing } from '../products.interface';
 
 @Component({
   selector: 'app-products-table',
@@ -14,10 +15,15 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
   ],
 })
 export class ProductsTableComponent {
-  dataSource = ELEMENT_DATA;
-  columnsToDisplay = ['name', 'weight', 'symbol', 'position'];
-  columnsToDisplayWithExpand = [...this.columnsToDisplay, 'expand'];
+  @Input() dataSource: ProductListing[] = [];
+  // columnsToDisplay = ['name', 'weight', 'symbol', 'position'];
+  columnsToDisplay = ['nameSku', 'newQuantity', 'newCost', 'taxCode'];
+  columnsToDisplayWithExpand = ['expand', ...this.columnsToDisplay, 'delete'];
   expandedElement: PeriodicElement | null = null;
+
+  log(...data: any[]) {
+    console.log(...data);
+  }
 }
 
 export interface PeriodicElement {

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Product } from './products.interface';
+import { Product, ProductListing } from './products.interface';
 import { ProductsService } from './products.service';
 
 @Component({
@@ -10,7 +10,7 @@ import { ProductsService } from './products.service';
 export class ProductsComponent implements OnInit {
   products: Product[] = [];
   productSearchKeys = ['sku', 'name'];
-  selectedProducts: Product[] = [];
+  productListings: ProductListing[] = [];
 
   constructor(
     private productsService: ProductsService,
@@ -24,15 +24,22 @@ export class ProductsComponent implements OnInit {
     this.productsService.getAllProducts().subscribe((products) => {
       this.products = products;
       // todo remove below
-      this.selectedProducts = [products[0], products[1]];
+      this.productListings = [
+        this.productsService.createProductListing(products[0]),
+        this.productsService.createProductListing(products[1])
+      ];
     });
   }
 
   selectProduct(product: Product) {
-    const isNewSelection = !this.selectedProducts.find( selectedProduct => selectedProduct.id === product.id);
+    console.log('ProductsComponent selectProduct called with product: ', product);
+    const isNewSelection = !this.productListings.find(productListing => productListing.productId === product.productId);
     if (isNewSelection) {
-      this.selectedProducts.push(product);
+      this.productListings.push(this.productsService.createProductListing(product));
+    } else {
+      console.log('ProductsComponent selectProduct repeat selection');
     }
+    console.log('ProductsComponent selectProduct this.productListings: ', this.productListings);
   }
 
 }
