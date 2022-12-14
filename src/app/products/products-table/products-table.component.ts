@@ -1,4 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { ProductListing } from '../products.interface';
 
@@ -14,12 +15,27 @@ import { ProductListing } from '../products.interface';
     ]),
   ],
 })
-export class ProductsTableComponent {
-  @Input() dataSource: ProductListing[] = [];
+export class ProductsTableComponent implements OnInit, OnDestroy {
+  @Input() dataSource: Observable<ProductListing[]> | undefined;
+
   columnsToDisplay = ['nameSku', 'newQuantity', 'newCost', 'taxCode'];
   columnsToDisplayWithExpand = ['expand', ...this.columnsToDisplay, 'delete'];
+  listingLength: number = 0;
+  private subscription: Subscription | undefined;
+
+  ngOnInit(): void {
+    if (this.dataSource) {
+      this.subscription = this.dataSource.subscribe((value) => this.listingLength = value.length);
+    }
+  }
 
   log(...data: any[]) {
     console.log(...data);
+  }
+
+  ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 }
