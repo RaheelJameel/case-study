@@ -46,6 +46,10 @@ tr.example-element-row:not(.example-expanded-row):active {
   opacity: 0.5;
 }
 
+.wrapper {
+  width: 900px;
+}
+
 .expand-element {
   padding: 0;
 }
@@ -54,16 +58,23 @@ tr.example-element-row:not(.example-expanded-row):active {
   width: 80px;
 }
 
+.mat-column-nameSku {
+  min-width: 175px;
+}
+
 .mat-column-newQuantity {
-  width: 200px;
+  width: 175px;
+  min-width: 100px;
 }
 
 .mat-column-newCost {
-  width: 200px;
+  width: 175px;
+  min-width: 100px;
 }
 
 .mat-column-taxCode {
-  width: 200px;
+  width: 175px;
+  min-width: 100px;
 }
 
 .mat-column-delete {
