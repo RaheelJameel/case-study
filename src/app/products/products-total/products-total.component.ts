@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { ProductsService } from '../products.service';
+import { ProductsCosting } from '../products.interface';
 
 @Component({
   selector: 'app-products-total',
@@ -14,8 +16,15 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
   ],
 })
 export class ProductsTotalComponent {
+  finalCosting: ProductsCosting;
   displayedColumns: string[] = ['expand', 'description', 'amounts', 'padding'];
   displayedColumns2: string[] = ['payment'];
   dataSource = [{}];
   expanded = false;
+
+  constructor(
+    private productsService: ProductsService,
+  ) {
+    this.finalCosting = this.productsService.finalCosting;
+  }
 }

@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
 import { Product, ProductListing } from './products.interface';
 import { ProductsService } from './products.service';
 
@@ -8,10 +8,12 @@ import { ProductsService } from './products.service';
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.scss']
 })
-export class ProductsComponent implements OnInit {
+export class ProductsComponent implements OnInit, OnDestroy {
   products: Product[] = [];
   productSearchKeys = ['sku', 'name'];
   productListingsObservable: Observable<ProductListing[]>;
+  listingLength: number = 0;
+  private subscription: Subscription | undefined;
 
   constructor(
     private productsService: ProductsService,
@@ -21,12 +23,19 @@ export class ProductsComponent implements OnInit {
 
   ngOnInit() {
     this.getAllProducts();
+    this.watchProductListingLength();
   }
 
   getAllProducts() {
     this.productsService.getAllProducts().subscribe((products) => {
       this.products = products;
     });
+  }
+
+  watchProductListingLength() {
+    if (this.productListingsObservable) {
+      this.subscription = this.productListingsObservable.subscribe((value) => this.listingLength = value.length);
+    }
   }
 
   selectProduct(product: Product) {
@@ -36,6 +45,12 @@ export class ProductsComponent implements OnInit {
 
   onDeleteProduct(productListing: ProductListing) {
     this.productsService.deleteProduct(productListing);
+  }
+
+  ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
 }

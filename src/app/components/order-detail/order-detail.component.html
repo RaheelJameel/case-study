@@ -15,10 +15,13 @@
 
   <mat-form-field class="example-full-width">
     <textarea
+      #notesTextArea
       matInput
       cdkTextareaAutosize
       cdkAutosizeMinRows="3"
       placeholder="Notes"
+      maxlength="200"
     ></textarea>
+    <mat-hint align="end">{{ notesTextArea.value.length }} / 200</mat-hint>
   </mat-form-field>
 </form>

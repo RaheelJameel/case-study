@@ -15,7 +15,7 @@
     <td mat-cell *matCellDef>{{!expanded ? 'Total (Tax Inclusive)' : 'Sub Total (Tax Exclusive)'}}</td>
   </ng-container>
   <ng-container matColumnDef="amounts">
-    <td mat-cell *matCellDef>{{!expanded ? '69000' : '60000'}}</td>
+    <td mat-cell *matCellDef>{{!expanded ? finalCosting.totalCostWTax : finalCosting.totalCostWOTax}}</td>
   </ng-container>
   <ng-container matColumnDef="padding">
     <td mat-cell *matCellDef>&nbsp;</td>
@@ -33,7 +33,7 @@
       <td mat-cell *matCellDef>Total Tax</td>
     </ng-container>
     <ng-container matColumnDef="amounts">
-      <td mat-cell *matCellDef>+ 9000</td>
+      <td mat-cell *matCellDef>+ {{ finalCosting.taxAmount }}</td>
     </ng-container>
     <ng-container matColumnDef="padding">
       <td mat-cell *matCellDef>&nbsp;</td>
@@ -50,7 +50,7 @@
       <td mat-cell *matCellDef>Total (Tax Inclusive)</td>
     </ng-container>
     <ng-container matColumnDef="amounts">
-      <td mat-cell *matCellDef>69000</td>
+      <td mat-cell *matCellDef>{{ finalCosting.totalCostWTax }}</td>
     </ng-container>
     <ng-container matColumnDef="padding">
       <td mat-cell *matCellDef>&nbsp;</td>

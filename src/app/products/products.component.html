@@ -1,5 +1,5 @@
 <h3>Products</h3>
-<p><mat-icon fontIcon="error"></mat-icon> Products Qty, ...</p>
+<p><mat-icon fontIcon="error"></mat-icon> Products Qty, the average product cost and the latest buying price are updated after completing the purchase order</p>
 <app-search
   *ngIf="products.length"
   [options]="products"
@@ -7,12 +7,14 @@
   [displayKeys]="productSearchKeys"
   (selection)="selectProduct($event)"
 ></app-search>
-<div class="wrapper">
-  <app-products-table
-    [dataSource]="productListingsObservable"
-    (delete)="onDeleteProduct($event)"
-  ></app-products-table>
-</div>
-<div class="wrapper">
-  <app-products-total></app-products-total>
-</div>
+<ng-container *ngIf="listingLength">
+  <div class="wrapper">
+    <app-products-table
+      [dataSource]="productListingsObservable"
+      (delete)="onDeleteProduct($event)"
+    ></app-products-table>
+  </div>
+  <div class="wrapper">
+    <app-products-total></app-products-total>
+  </div>
+</ng-container>

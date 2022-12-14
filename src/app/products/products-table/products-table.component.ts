@@ -1,7 +1,7 @@
-import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Observable, Subscription } from 'rxjs';
-import { Product, ProductListing } from '../products.interface';
+import { Observable } from 'rxjs';
+import { ProductListing } from '../products.interface';
 
 @Component({
   selector: 'app-products-table',
@@ -15,20 +15,12 @@ import { Product, ProductListing } from '../products.interface';
     ]),
   ],
 })
-export class ProductsTableComponent implements OnInit, OnDestroy {
+export class ProductsTableComponent {
   @Input() dataSource: Observable<ProductListing[]> | undefined;
   @Output() delete: EventEmitter<ProductListing> = new EventEmitter();
 
   columnsToDisplay = ['nameSku', 'newQuantity', 'newCost', 'taxCode'];
   columnsToDisplayWithExpand = ['expand', ...this.columnsToDisplay, 'delete'];
-  listingLength: number = 0;
-  private subscription: Subscription | undefined;
-
-  ngOnInit(): void {
-    if (this.dataSource) {
-      this.subscription = this.dataSource.subscribe((value) => this.listingLength = value.length);
-    }
-  }
 
   log(...data: any[]) {
     console.log(...data);
@@ -36,11 +28,5 @@ export class ProductsTableComponent implements OnInit, OnDestroy {
 
   deleteProduct(productListing: ProductListing) {
     this.delete.emit(productListing);
-  }
-
-  ngOnDestroy(): void {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
   }
 }

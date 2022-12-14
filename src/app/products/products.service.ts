@@ -1,23 +1,56 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, Validators, FormArray, FormGroup } from '@angular/forms';
 import { BehaviorSubject, Observable } from 'rxjs';
 
-import { Product, ProductListing } from './products.interface';
+import { Product, ProductsCosting, ProductListing, ProductListingFormGroup, ProductComputedValues } from './products.interface';
 import { uuid } from '../shared/helpers';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductsService {
+  finalCosting: ProductsCosting = {
+    totalCostWOTax: 0, taxAmount: 0, totalCostWTax: 0
+  }
   private apiUrl = 'http://localhost:4000/products';
   private productListings: ProductListing[] = [];
   private productListingsSubject = new BehaviorSubject<ProductListing[]>([]);
+  private productListingsFormArray: FormArray<FormGroup> = new FormArray<FormGroup>([]);
 
   constructor(
     private http: HttpClient,
     private fb: FormBuilder,
-  ) { }
+  ) {
+    this.watchFormArrayChange();
+  }
+
+  watchFormArrayChange() {
+    this.productListingsFormArray.valueChanges.subscribe((formGroupValues: ProductListingFormGroup[]) => {
+      console.log('this.productListingsFormArray.valueChanges.subscribe value: ', formGroupValues);
+      let finalTotalCostWOTax = 0;
+      let finalTaxAmount = 0;
+      let finalTotalCostWTax = 0;
+      formGroupValues.forEach((formGroupValue, index) => {
+        const calculatedValues = this.onFormGroupValueUpdate(formGroupValue);
+
+        this.productListings[index].expectedQuantity = calculatedValues.expectedQuantity;
+        this.productListings[index].totalCostWOTax = calculatedValues.totalCostWOTax;
+        this.productListings[index].taxAmount = calculatedValues.taxAmount;
+        this.productListings[index].totalCostWTax = calculatedValues.totalCostWTax;
+
+        finalTotalCostWOTax += calculatedValues.totalCostWOTax;
+        finalTaxAmount += calculatedValues.taxAmount;
+        finalTotalCostWTax += calculatedValues.totalCostWTax;
+      });
+
+      this.publishProductListings();
+
+      this.finalCosting.totalCostWOTax = finalTotalCostWOTax;
+      this.finalCosting.taxAmount = finalTaxAmount;
+      this.finalCosting.totalCostWTax = finalTotalCostWTax;
+    });
+  }
 
   getAllProducts() {
     return this.http.get<Product[]>(this.apiUrl);
@@ -31,13 +64,33 @@ export class ProductsService {
     this.productListingsSubject.next(this.productListings);
   }
 
+  onFormGroupValueUpdate(value: ProductListingFormGroup): ProductComputedValues {
+    let newQuantity = value.newQuantity && Number.parseInt(value.newQuantity) || 0;
+    newQuantity = newQuantity < 0 ? 0 : newQuantity;
+    let newCost = value.newCost && Number.parseInt(value.newCost) || 0;
+    newCost = newCost < 0 ? 0 : newCost;
+    const isTax = value.taxCode === 'vat';
+
+    const expectedQuantity = newQuantity;
+    const totalCostWOTax = newQuantity * newCost;
+    const taxAmount = isTax ? totalCostWOTax * 0.15 : 0;
+    const totalCostWTax = totalCostWOTax + taxAmount;
+
+    return {
+      expectedQuantity,
+      totalCostWOTax,
+      taxAmount,
+      totalCostWTax,
+    }
+  }
+
   createProductListing(product: Product): ProductListing {
     const formGroup = this.fb.group({
       newQuantity: ['', Validators.required],
       newCost: ['', Validators.required],
       taxCode: ['vat', Validators.required],
     });
-    const listing: ProductListing = {
+    return {
       ...product,
       listingId: uuid(),
       newQuantity: 0,
@@ -51,39 +104,26 @@ export class ProductsService {
       totalCostWTax: 0,
       formGroup,
     };
-    formGroup.valueChanges.subscribe((value) => {
-      let newQuantity = value.newQuantity && Number.parseInt(value.newQuantity) || 0;
-      newQuantity = newQuantity < 0 ? 0 : newQuantity;
-      let newCost = value.newCost && Number.parseInt(value.newCost) || 0;
-      newCost = newCost < 0 ? 0 : newCost;
-      const isTax = value.taxCode === 'vat';
-
-      listing.expectedQuantity = newQuantity;
-      listing.totalCostWOTax = newQuantity * newCost;
-      listing.taxAmount = isTax ? listing.totalCostWOTax * 0.15 : 0;
-      listing.totalCostWTax = listing.totalCostWOTax + listing.taxAmount;
-
-      this.publishProductListings();
-    });
-    return listing;
   }
 
   addProductToSelection(product: Product): ProductListing[] {
-    console.log('ProductsService addProductToSelection called with product: ', product);
     const isNewSelection = !this.productListings.find(productListing => productListing.productId === product.productId);
     if (isNewSelection) {
-      console.log('ProductsService addProductToSelection add selection');
-      this.productListings.push(this.createProductListing(product));
+      const newProductListing = this.createProductListing(product);
+      this.productListings.push(newProductListing);
+      this.productListingsFormArray.push(newProductListing.formGroup);
       this.publishProductListings();
     } else {
-      console.log('ProductsService addProductToSelection repeat selection');
     }
-    console.log('ProductsService addProductToSelection this.productListings: ', this.productListings);
     return this.productListings;
   }
 
   deleteProduct(productListing: ProductListing) {
-    this.productListings = this.productListings.filter((item) => item.listingId !== productListing.listingId);
-    this.publishProductListings();
+    const index = this.productListings.findIndex((item) => item.listingId === productListing.listingId);
+    if (index > -1) {
+      this.productListings.splice(index, 1);
+      this.productListingsFormArray.removeAt(index);
+      this.publishProductListings();
+    }
   }
 }

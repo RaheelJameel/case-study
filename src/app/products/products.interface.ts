@@ -19,3 +19,19 @@ export interface ProductListing extends Product {
   totalCostWTax: number;
   formGroup: FormGroup;
 }
+
+export interface ProductListingFormGroup {
+  newQuantity?: string | null;
+  newCost?: string | null;
+  taxCode?: string | null;
+}
+
+export interface ProductsCosting {
+  totalCostWOTax: number;
+  taxAmount: number;
+  totalCostWTax: number;
+}
+
+export interface ProductComputedValues extends ProductsCosting {
+  expectedQuantity: number;
+}
