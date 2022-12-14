@@ -29,9 +29,10 @@ export class ProductsComponent implements OnInit {
   }
 
   selectProduct(product: Product) {
-    console.log('ProductsComponent selectProduct called with product: ', product);
-    this.selectedProducts.push(product);
-    console.log('ProductsComponent selectProduct this.selectedProducts: ', this.selectedProducts);
+    const isNewSelection = !this.selectedProducts.find( selectedProduct => selectedProduct.id === product.id);
+    if (isNewSelection) {
+      this.selectedProducts.push(product);
+    }
   }
 
 }
