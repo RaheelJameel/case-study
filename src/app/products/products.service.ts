@@ -22,15 +22,15 @@ export class ProductsService {
     return {
       ...product,
       listingId: uuid(),
-      newQuantity: 0,
-      newCost: 0,
-      taxCode: '',
-      availableQuantity: 0,
-      expectedQuantity: 0,
-      lastBuyPrice: 0,
-      totalCostWOTax: 0,
-      taxAmount: 0,
-      totalCostWTax: 0,
+      newQuantity: Number.parseInt(uuid()),
+      newCost: Number.parseInt(uuid()),
+      taxCode: uuid(),
+      availableQuantity: Number.parseInt(uuid()),
+      expectedQuantity: Number.parseInt(uuid()),
+      lastBuyPrice: Number.parseInt(uuid()),
+      totalCostWOTax: Number.parseInt(uuid()),
+      taxAmount: Number.parseInt(uuid()),
+      totalCostWTax: Number.parseInt(uuid()),
     };
   }
 }
