@@ -1,0 +1,76 @@
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+  <ng-container matColumnDef="expand">
+    <td mat-cell *matCellDef>
+      <button
+        mat-icon-button
+        aria-label="expand row"
+        (click)="expanded = !expanded; $event.stopPropagation()"
+      >
+        <mat-icon *ngIf="!expanded"> keyboard_arrow_down </mat-icon>
+        <mat-icon *ngIf="expanded"> keyboard_arrow_up </mat-icon>
+      </button>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="description">
+    <td mat-cell *matCellDef>{{!expanded ? 'Total (Tax Inclusive)' : 'Sub Total (Tax Exclusive)'}}</td>
+  </ng-container>
+  <ng-container matColumnDef="amounts">
+    <td mat-cell *matCellDef>{{!expanded ? '69000' : '60000'}}</td>
+  </ng-container>
+  <ng-container matColumnDef="padding">
+    <td mat-cell *matCellDef>&nbsp;</td>
+  </ng-container>
+
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+</table>
+
+<div [@detailExpand]="expanded ? 'expanded' : 'collapsed'">
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <ng-container matColumnDef="expand">
+      <td mat-cell *matCellDef>&nbsp;</td>
+    </ng-container>
+    <ng-container matColumnDef="description">
+      <td mat-cell *matCellDef>Total Tax</td>
+    </ng-container>
+    <ng-container matColumnDef="amounts">
+      <td mat-cell *matCellDef>+ 9000</td>
+    </ng-container>
+    <ng-container matColumnDef="padding">
+      <td mat-cell *matCellDef>&nbsp;</td>
+    </ng-container>
+
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <ng-container matColumnDef="expand">
+      <td mat-cell *matCellDef>&nbsp;</td>
+    </ng-container>
+    <ng-container matColumnDef="description">
+      <td mat-cell *matCellDef>Total (Tax Inclusive)</td>
+    </ng-container>
+    <ng-container matColumnDef="amounts">
+      <td mat-cell *matCellDef>69000</td>
+    </ng-container>
+    <ng-container matColumnDef="padding">
+      <td mat-cell *matCellDef>&nbsp;</td>
+    </ng-container>
+
+    <!-- <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr> -->
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+</div>
+
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+  <ng-container matColumnDef="payment">
+    <td mat-cell *matCellDef>
+      <div>Pay Now</div>
+      <div>Payment Method <input type="text"/></div>
+      <div>Paid Amount <input type="text"/></div>
+      <div>Credit Amount <input type="text"/></div>
+      <div>Payment Due Date <input type="text"/></div>
+    </td>
+  </ng-container>
+
+  <tr mat-row *matRowDef="let row; columns: displayedColumns2"></tr>
+</table>

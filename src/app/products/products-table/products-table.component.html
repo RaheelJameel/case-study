@@ -51,7 +51,6 @@
       </td>
     </ng-container>
 
-    <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
     <ng-container matColumnDef="expandedDetail">
       <td
         mat-cell
@@ -65,10 +64,10 @@
         >
           <table mat-table [dataSource]="[element]" class="mat-elevation-z8">
             <ng-container matColumnDef="expand">
-              <td mat-cell *matCellDef></td>
+              <td mat-cell *matCellDef>&nbsp;</td>
             </ng-container>
             <ng-container matColumnDef="nameSku">
-              <td mat-cell *matCellDef></td>
+              <td mat-cell *matCellDef>&nbsp;</td>
             </ng-container>
             <ng-container matColumnDef="newQuantity">
               <td mat-cell *matCellDef>
@@ -96,7 +95,7 @@
               </td>
             </ng-container>
             <ng-container matColumnDef="newCost">
-              <td mat-cell *matCellDef></td>
+              <td mat-cell *matCellDef>&nbsp;</td>
             </ng-container>
             <ng-container matColumnDef="taxCode">
               <td mat-cell *matCellDef>
@@ -124,7 +123,7 @@
               </td>
             </ng-container>
             <ng-container matColumnDef="delete">
-              <td mat-cell *matCellDef></td>
+              <td mat-cell *matCellDef>&nbsp;</td>
             </ng-container>
 
             <tr

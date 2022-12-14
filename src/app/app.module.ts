@@ -4,7 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 
-import { MaterialModule } from './material.module';
+import { MaterialModule } from './shared/material.module';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 
 import { AppComponent } from './app.component';
@@ -15,6 +15,7 @@ import { SearchComponent } from './components/search/search.component';
 import { ProductsTableComponent } from './products/products-table/products-table.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ObjectToStringPipe } from './shared/pipes/object-to-string.pipe';
+import { ProductsTotalComponent } from './products/products-total/products-total.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { ObjectToStringPipe } from './shared/pipes/object-to-string.pipe';
     SearchComponent,
     ProductsTableComponent,
     ObjectToStringPipe,
+    ProductsTotalComponent,
   ],
   imports: [
     BrowserModule,

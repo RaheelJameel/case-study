@@ -7,4 +7,9 @@
   [displayKeys]="productSearchKeys"
   (selection)="selectProduct($event)"
 ></app-search>
-<app-products-table *ngIf="productListings.length" [dataSource]="productListings"></app-products-table>
+<div class="wrapper">
+  <app-products-table *ngIf="productListings.length" [dataSource]="productListings"></app-products-table>
+</div>
+<div class="wrapper">
+  <app-products-total></app-products-total>
+</div>
