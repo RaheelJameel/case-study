@@ -1,4 +1,17 @@
 <mat-form-field class="search">
   <mat-icon matPrefix fontIcon="search"></mat-icon>
-  <input matInput placeholder="Type Variant or SKU" />
+  <input
+    matInput
+    placeholder="Type Variant or SKU"
+    [formControl]="myControl"
+    [matAutocomplete]="auto"
+  />
+  <mat-autocomplete #auto="matAutocomplete">
+    <mat-option
+      *ngFor="let option of filteredOptions | async"
+      (click)="onSelection(option)"
+    >
+      {{ option | objectToString : displayKeys }}
+    </mat-option>
+  </mat-autocomplete>
 </mat-form-field>
