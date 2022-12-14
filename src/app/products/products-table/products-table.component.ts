@@ -1,7 +1,7 @@
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { ProductListing } from '../products.interface';
+import { Observable, Subscription } from 'rxjs';
+import { Product, ProductListing } from '../products.interface';
 
 @Component({
   selector: 'app-products-table',
@@ -17,6 +17,7 @@ import { ProductListing } from '../products.interface';
 })
 export class ProductsTableComponent implements OnInit, OnDestroy {
   @Input() dataSource: Observable<ProductListing[]> | undefined;
+  @Output() delete: EventEmitter<ProductListing> = new EventEmitter();
 
   columnsToDisplay = ['nameSku', 'newQuantity', 'newCost', 'taxCode'];
   columnsToDisplayWithExpand = ['expand', ...this.columnsToDisplay, 'delete'];
@@ -31,6 +32,10 @@ export class ProductsTableComponent implements OnInit, OnDestroy {
 
   log(...data: any[]) {
     console.log(...data);
+  }
+
+  deleteProduct(productListing: ProductListing) {
+    this.delete.emit(productListing);
   }
 
   ngOnDestroy(): void {

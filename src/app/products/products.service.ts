@@ -54,4 +54,9 @@ export class ProductsService {
   onProductListingChange(): Observable<ProductListing[]> {
     return this.productListingsSubject.asObservable();
   }
+
+  deleteProduct(productListing: ProductListing) {
+    this.productListings = this.productListings.filter((item) => item.listingId !== productListing.listingId);
+    this.productListingsSubject.next(this.productListings);
+  }
 }

@@ -8,7 +8,10 @@
   (selection)="selectProduct($event)"
 ></app-search>
 <div class="wrapper">
-  <app-products-table [dataSource]="productListingsObservable"></app-products-table>
+  <app-products-table
+    [dataSource]="productListingsObservable"
+    (delete)="onDeleteProduct($event)"
+  ></app-products-table>
 </div>
 <div class="wrapper">
   <app-products-total></app-products-total>

@@ -34,4 +34,8 @@ export class ProductsComponent implements OnInit {
     this.productsService.addProductToSelection(product);
   }
 
+  onDeleteProduct(productListing: ProductListing) {
+    this.productsService.deleteProduct(productListing);
+  }
+
 }
