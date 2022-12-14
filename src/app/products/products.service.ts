@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
+import { FormBuilder, Validators } from '@angular/forms';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 import { Product, ProductListing } from './products.interface';
 import { uuid } from '../shared/helpers';
-import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -15,26 +16,56 @@ export class ProductsService {
 
   constructor(
     private http: HttpClient,
+    private fb: FormBuilder,
   ) { }
 
   getAllProducts() {
     return this.http.get<Product[]>(this.apiUrl);
   }
 
+  onProductListingChange(): Observable<ProductListing[]> {
+    return this.productListingsSubject.asObservable();
+  }
+
+  private publishProductListings() {
+    this.productListingsSubject.next(this.productListings);
+  }
+
   createProductListing(product: Product): ProductListing {
-    return {
+    const formGroup = this.fb.group({
+      newQuantity: ['', Validators.required],
+      newCost: ['', Validators.required],
+      taxCode: ['vat', Validators.required],
+    });
+    const listing: ProductListing = {
       ...product,
       listingId: uuid(),
-      newQuantity: Number.parseInt(uuid()),
-      newCost: Number.parseInt(uuid()),
-      taxCode: uuid(),
-      availableQuantity: Number.parseInt(uuid()),
-      expectedQuantity: Number.parseInt(uuid()),
-      lastBuyPrice: Number.parseInt(uuid()),
-      totalCostWOTax: Number.parseInt(uuid()),
-      taxAmount: Number.parseInt(uuid()),
-      totalCostWTax: Number.parseInt(uuid()),
+      newQuantity: 0,
+      newCost: 0,
+      taxCode: 'vat',
+      availableQuantity: 0,
+      expectedQuantity: 0,
+      lastBuyPrice: 0,
+      totalCostWOTax: 0,
+      taxAmount: 0,
+      totalCostWTax: 0,
+      formGroup,
     };
+    formGroup.valueChanges.subscribe((value) => {
+      let newQuantity = value.newQuantity && Number.parseInt(value.newQuantity) || 0;
+      newQuantity = newQuantity < 0 ? 0 : newQuantity;
+      let newCost = value.newCost && Number.parseInt(value.newCost) || 0;
+      newCost = newCost < 0 ? 0 : newCost;
+      const isTax = value.taxCode === 'vat';
+
+      listing.expectedQuantity = newQuantity;
+      listing.totalCostWOTax = newQuantity * newCost;
+      listing.taxAmount = isTax ? listing.totalCostWOTax * 0.15 : 0;
+      listing.totalCostWTax = listing.totalCostWOTax + listing.taxAmount;
+
+      this.publishProductListings();
+    });
+    return listing;
   }
 
   addProductToSelection(product: Product): ProductListing[] {
@@ -43,7 +74,7 @@ export class ProductsService {
     if (isNewSelection) {
       console.log('ProductsService addProductToSelection add selection');
       this.productListings.push(this.createProductListing(product));
-      this.productListingsSubject.next(this.productListings);
+      this.publishProductListings();
     } else {
       console.log('ProductsService addProductToSelection repeat selection');
     }
@@ -51,12 +82,8 @@ export class ProductsService {
     return this.productListings;
   }
 
-  onProductListingChange(): Observable<ProductListing[]> {
-    return this.productListingsSubject.asObservable();
-  }
-
   deleteProduct(productListing: ProductListing) {
     this.productListings = this.productListings.filter((item) => item.listingId !== productListing.listingId);
-    this.productListingsSubject.next(this.productListings);
+    this.publishProductListings();
   }
 }

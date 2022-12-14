@@ -1,3 +1,5 @@
+import { FormGroup } from "@angular/forms";
+
 export interface Product {
   productId: string;
   name: string;
@@ -15,4 +17,5 @@ export interface ProductListing extends Product {
   totalCostWOTax: number;
   taxAmount: number;
   totalCostWTax: number;
+  formGroup: FormGroup;
 }
