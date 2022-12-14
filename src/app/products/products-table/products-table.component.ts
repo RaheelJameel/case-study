@@ -19,7 +19,8 @@ export class ProductsTableComponent {
   // columnsToDisplay = ['name', 'weight', 'symbol', 'position'];
   columnsToDisplay = ['nameSku', 'newQuantity', 'newCost', 'taxCode'];
   columnsToDisplayWithExpand = ['expand', ...this.columnsToDisplay, 'delete'];
-  expandedElement: PeriodicElement | null = null;
+  columnsToDisplayInExpand = []
+  // expandedElement: PeriodicElement | null = null;
 
   log(...data: any[]) {
     console.log(...data);

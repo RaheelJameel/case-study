@@ -45,3 +45,27 @@ tr.example-element-row:not(.example-expanded-row):active {
 .example-element-description-attribution {
   opacity: 0.5;
 }
+
+.expand-element {
+  padding: 0;
+}
+
+.mat-column-expand {
+  width: 80px;
+}
+
+.mat-column-newQuantity {
+  width: 200px;
+}
+
+.mat-column-newCost {
+  width: 200px;
+}
+
+.mat-column-taxCode {
+  width: 200px;
+}
+
+.mat-column-delete {
+  width: 80px;
+}

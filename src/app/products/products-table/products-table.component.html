@@ -13,15 +13,15 @@
           aria-label="expand row"
           (click)="
             log('click element: ', element);
-            expandedElement = expandedElement === element ? null : element;
-            log('click element: ', expandedElement);
+            element.expanded = !element.expanded;
+            log('click element.expanded: ', element.expanded);
             $event.stopPropagation()
           "
         >
-          <mat-icon *ngIf="expandedElement !== element">
+          <mat-icon *ngIf="!element.expanded">
             keyboard_arrow_down
           </mat-icon>
-          <mat-icon *ngIf="expandedElement === element">
+          <mat-icon *ngIf="element.expanded">
             keyboard_arrow_up
           </mat-icon>
         </button>
@@ -64,25 +64,30 @@
         mat-cell
         *matCellDef="let element"
         [attr.colspan]="columnsToDisplayWithExpand.length"
+        class="expand-element"
       >
         <div
           class="example-element-detail"
           [@detailExpand]="
-            element == expandedElement ? 'expanded' : 'collapsed'
+          element.expanded ? 'expanded' : 'collapsed'
           "
         >
-          <div class="example-element-diagram">
-            <div class="example-element-position">{{ element.position }}</div>
-            <div class="example-element-symbol">{{ element.symbol }}</div>
-            <div class="example-element-name">{{ element.name }}</div>
-            <div class="example-element-weight">{{ element.weight }}</div>
-          </div>
-          <div class="example-element-description">
-            {{ element.description }}
-            <span class="example-element-description-attribution">
-              -- Wikipedia
-            </span>
-          </div>
+          <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+            <!--- Note that these columns can be defined in any order.
+                  The actual rendered columns are set as a property on the row definition" -->
+
+            <!-- Position Column -->
+            <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplayWithExpand">
+              <th mat-header-cell *matHeaderCellDef> {{column}} </th>
+              <td mat-cell *matCellDef="let element"> {{element[column]}} </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
+            <tr mat-row *matRowDef="let row; columns: columnsToDisplayWithExpand;"></tr>
+          </table>
+
+
         </div>
       </td>
     </ng-container>
@@ -92,8 +97,7 @@
       mat-row
       *matRowDef="let element; columns: columnsToDisplayWithExpand"
       class="example-element-row"
-      [class.example-expanded-row]="expandedElement === element"
-
+      [class.example-expanded-row]="element.expanded"
     ></tr>
     <tr
       mat-row
