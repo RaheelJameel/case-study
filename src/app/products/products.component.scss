@@ -1,3 +1,15 @@
 .wrapper {
   width: 900px;
 }
+
+.explore-icon {
+  font-size: 150px;
+  height: unset;
+  width: unset;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

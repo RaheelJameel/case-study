@@ -3,14 +3,16 @@
   <mat-icon fontIcon="error"></mat-icon> Products Qty, the average product cost
   and the latest buying price are updated after completing the purchase order
 </p>
-<app-search
-  *ngIf="products.length"
-  [options]="products"
-  [queryKeys]="productSearchKeys"
-  [displayKeys]="productSearchKeys"
-  (selection)="selectProduct($event)"
-></app-search>
-<ng-container *ngIf="listingLength">
+<div>
+  <app-search
+    *ngIf="products.length"
+    [options]="products"
+    [queryKeys]="productSearchKeys"
+    [displayKeys]="productSearchKeys"
+    (selection)="selectProduct($event)"
+  ></app-search>
+</div>
+<ng-container *ngIf="listingLength; else message">
   <div class="wrapper">
     <app-products-table
       [dataSource]="productListingsObservable"
@@ -21,3 +23,13 @@
     <app-products-total></app-products-total>
   </div>
 </ng-container>
+<ng-template #message>
+  <div class="info">
+    <div>
+      <mat-icon class="explore-icon">travel_explore</mat-icon>
+    </div>
+    <div>
+      Search for products that you would like to include in your purchase order
+    </div>
+  </div>
+</ng-template>

@@ -26,7 +26,9 @@ export class ProductsTotalComponent implements OnInit, OnDestroy {
   dataSource = [{}];
   expanded = false;
   payNow = true;
-  private subscription: Subscription | undefined;
+  amountPaid = 0;
+  private paymentTypeSubscription: Subscription | undefined;
+  private paidAmountSubscription: Subscription | undefined;
 
   constructor(
     private productsService: ProductsService,
@@ -39,6 +41,7 @@ export class ProductsTotalComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.setupForm();
     this.watchPaymentType();
+    this.watchPaidAmount();
   }
 
   setupForm() {
@@ -60,7 +63,7 @@ export class ProductsTotalComponent implements OnInit, OnDestroy {
       const paymentMethodControl = this.paymentForm.get('paymentMethod');
       const paidAmountControl = this.paymentForm.get('paidAmount');
       if (paymentTypeControl && paymentMethodControl && paidAmountControl) {
-        this.subscription = paymentTypeControl.valueChanges.subscribe((value) => {
+        this.paymentTypeSubscription = paymentTypeControl.valueChanges.subscribe((value) => {
           this.payNow = value === 'now';
           paidAmountControl.reset();
           paymentMethodControl.reset();
@@ -78,9 +81,21 @@ export class ProductsTotalComponent implements OnInit, OnDestroy {
     }
   }
 
+  watchPaidAmount() {
+    if (this.paymentForm) {
+      const paidAmountControl = this.paymentForm.get('paidAmount');
+      if (paidAmountControl) {
+        this.paidAmountSubscription = paidAmountControl.valueChanges.subscribe((value) => this.amountPaid = value);
+      }
+    }
+  }
+
   ngOnDestroy(): void {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
+    if (this.paymentTypeSubscription) {
+      this.paymentTypeSubscription.unsubscribe();
+    }
+    if (this.paidAmountSubscription) {
+      this.paidAmountSubscription.unsubscribe();
     }
     this.coreService.resetPaymentForm();
   }

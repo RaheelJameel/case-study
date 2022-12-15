@@ -69,7 +69,10 @@
     <ng-container matColumnDef="payment">
       <td mat-cell *matCellDef>
         <div class="payment-type">
-          <mat-radio-group aria-label="Select an option" formControlName="paymentType">
+          <mat-radio-group
+            aria-label="Select an option"
+            formControlName="paymentType"
+          >
             <mat-radio-button value="now">Pay Now</mat-radio-button>
             <mat-radio-button value="later">Pay Later</mat-radio-button>
           </mat-radio-group>
@@ -78,7 +81,10 @@
           <div class="col">Payment Method</div>
           <div class="col">
             <mat-form-field class="input-fields mat-form-field-no-hint">
-              <mat-select placeholder="Select a method" formControlName="paymentMethod">
+              <mat-select
+                placeholder="Select a method"
+                formControlName="paymentMethod"
+              >
                 <mat-option value="cash">Cash</mat-option>
                 <mat-option value="credit">Credit Card</mat-option>
               </mat-select>
@@ -95,13 +101,17 @@
         </div>
         <div class="tabular">
           <div class="col">Credit Amount</div>
-          <div class="col">90000</div>
+          <div class="col">{{ finalCosting.totalCostWTax - amountPaid }}</div>
         </div>
         <div class="tabular">
           <div class="col">Payment Due Date</div>
           <div class="col">
             <mat-form-field>
-              <input matInput [matDatepicker]="picker" formControlName="dueDate" />
+              <input
+                matInput
+                [matDatepicker]="picker"
+                formControlName="dueDate"
+              />
               <mat-datepicker-toggle
                 matIconSuffix
                 [for]="picker"
