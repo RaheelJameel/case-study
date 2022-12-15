@@ -6,8 +6,8 @@
         aria-label="expand row"
         (click)="expanded = !expanded; $event.stopPropagation()"
       >
-        <mat-icon *ngIf="!expanded"> keyboard_arrow_down </mat-icon>
-        <mat-icon *ngIf="expanded"> keyboard_arrow_up </mat-icon>
+        <mat-icon *ngIf="!expanded"> chevron_right </mat-icon>
+        <mat-icon *ngIf="expanded"> keyboard_arrow_down </mat-icon>
       </button>
     </td>
   </ng-container>

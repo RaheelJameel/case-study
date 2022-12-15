@@ -6,13 +6,13 @@ tr.example-detail-row {
   height: 0;
 }
 
-tr.example-element-row:not(.example-expanded-row):hover {
-  background: whitesmoke;
-}
+// tr.example-element-row:not(.example-expanded-row):hover {
+//   background: whitesmoke;
+// }
 
-tr.example-element-row:not(.example-expanded-row):active {
-  background: #efefef;
-}
+// tr.example-element-row:not(.example-expanded-row):active {
+//   background: #efefef;
+// }
 
 // .example-element-row td {
 //   border-bottom-width: 0;
@@ -20,6 +20,7 @@ tr.example-element-row:not(.example-expanded-row):active {
 
 .input-fields {
   width: 140px;
+  margin: 0.5em 0.5em -0.75em;
 }
 
 .example-element-detail {
@@ -59,21 +60,21 @@ tr.example-element-row:not(.example-expanded-row):active {
 }
 
 .mat-column-nameSku {
-  min-width: 175px;
+  min-width: 188px;
 }
 
 .mat-column-newQuantity {
-  width: 175px;
+  width: 188px;
   min-width: 100px;
 }
 
 .mat-column-newCost {
-  width: 175px;
+  width: 188px;
   min-width: 100px;
 }
 
 .mat-column-taxCode {
-  width: 175px;
+  width: 188px;
   min-width: 100px;
 }
 
@@ -84,3 +85,7 @@ tr.example-element-row:not(.example-expanded-row):active {
 .data-display {
   padding: 10px 0;
 }
+.data-values {
+  font-weight: 500;
+}
+

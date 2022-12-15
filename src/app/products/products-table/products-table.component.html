@@ -16,8 +16,8 @@
             element.expanded = !element.expanded; $event.stopPropagation()
           "
         >
-          <mat-icon *ngIf="!element.expanded"> keyboard_arrow_down </mat-icon>
-          <mat-icon *ngIf="element.expanded"> keyboard_arrow_up </mat-icon>
+          <mat-icon *ngIf="!element.expanded"> chevron_right </mat-icon>
+          <mat-icon *ngIf="element.expanded"> keyboard_arrow_down </mat-icon>
         </button>
       </td>
     </ng-container>
@@ -101,7 +101,7 @@
                     (Available in Stock)
                   </span>
                   <br />
-                  {{ element["availableQuantity"] }}
+                  <span class="data-values">{{ element["availableQuantity"] }}</span>
                 </div>
                 <div>
                   <span style="font-size: smaller">
@@ -109,12 +109,12 @@
                     (Total will be available)
                   </span>
                   <br />
-                  {{ element["expectedQuantity"] }}
+                  <span class="data-values">{{ element["expectedQuantity"] }}</span>
                 </div>
                 <div class="data-display">
                   <span style="font-size: smaller">Last Buy Price</span>
                   <br />
-                  {{ element["lastBuyPrice"] }}
+                  <span class="data-values">{{ element["lastBuyPrice"] }}</span>
                 </div>
               </td>
             </ng-container>
@@ -129,12 +129,12 @@
                     (Tax Exclusive)
                   </span>
                   <br />
-                  {{ element["totalCostWOTax"] }}
+                  <span class="data-values">{{ element["totalCostWOTax"] }}</span>
                 </div>
                 <div>
                   <span style="font-size: smaller">Tax Amount</span>
                   <br />
-                  {{ element["taxAmount"] }}
+                  <span class="data-values">{{ element["taxAmount"] }}</span>
                 </div>
                 <div class="data-display">
                   <span style="font-size: smaller">
@@ -142,7 +142,7 @@
                     (Tax Inclusive)
                   </span>
                   <br />
-                  {{ element["totalCostWTax"] }}
+                  <span class="data-values">{{ element["totalCostWTax"] }}</span>
                 </div>
               </td>
             </ng-container>
