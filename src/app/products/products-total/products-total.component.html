@@ -12,10 +12,14 @@
     </td>
   </ng-container>
   <ng-container matColumnDef="description">
-    <td mat-cell *matCellDef>{{!expanded ? 'Total (Tax Inclusive)' : 'Sub Total (Tax Exclusive)'}}</td>
+    <td mat-cell *matCellDef>
+      {{ !expanded ? "Total (Tax Inclusive)" : "Sub Total (Tax Exclusive)" }}
+    </td>
   </ng-container>
   <ng-container matColumnDef="amounts">
-    <td mat-cell *matCellDef>{{!expanded ? finalCosting.totalCostWTax : finalCosting.totalCostWOTax}}</td>
+    <td mat-cell *matCellDef>
+      {{ !expanded ? finalCosting.totalCostWTax : finalCosting.totalCostWOTax }}
+    </td>
   </ng-container>
   <ng-container matColumnDef="padding">
     <td mat-cell *matCellDef>&nbsp;</td>
@@ -56,21 +60,59 @@
       <td mat-cell *matCellDef>&nbsp;</td>
     </ng-container>
 
-    <!-- <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr> -->
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
   </table>
 </div>
 
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-  <ng-container matColumnDef="payment">
-    <td mat-cell *matCellDef>
-      <div>Pay Now</div>
-      <div>Payment Method <input type="text"/></div>
-      <div>Paid Amount <input type="text"/></div>
-      <div>Credit Amount <input type="text"/></div>
-      <div>Payment Due Date <input type="text"/></div>
-    </td>
-  </ng-container>
+<form *ngIf="paymentForm" [formGroup]="paymentForm">
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <ng-container matColumnDef="payment">
+      <td mat-cell *matCellDef>
+        <div class="payment-type">
+          <mat-radio-group aria-label="Select an option" formControlName="paymentType">
+            <mat-radio-button value="now">Pay Now</mat-radio-button>
+            <mat-radio-button value="later">Pay Later</mat-radio-button>
+          </mat-radio-group>
+        </div>
+        <div *ngIf="payNow" class="tabular">
+          <div class="col">Payment Method</div>
+          <div class="col">
+            <mat-form-field class="input-fields mat-form-field-no-hint">
+              <mat-select placeholder="Select a method" formControlName="paymentMethod">
+                <mat-option value="cash">Cash</mat-option>
+                <mat-option value="credit">Credit Card</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div *ngIf="payNow" class="tabular">
+          <div class="col">Paid Amount</div>
+          <div class="col">
+            <mat-form-field class="input-fields mat-form-field-no-hint">
+              <input matInput type="number" formControlName="paidAmount" />
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="tabular">
+          <div class="col">Credit Amount</div>
+          <div class="col">90000</div>
+        </div>
+        <div class="tabular">
+          <div class="col">Payment Due Date</div>
+          <div class="col">
+            <mat-form-field>
+              <input matInput [matDatepicker]="picker" formControlName="dueDate" />
+              <mat-datepicker-toggle
+                matIconSuffix
+                [for]="picker"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </div>
+      </td>
+    </ng-container>
 
-  <tr mat-row *matRowDef="let row; columns: displayedColumns2"></tr>
-</table>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns2"></tr>
+  </table>
+</form>

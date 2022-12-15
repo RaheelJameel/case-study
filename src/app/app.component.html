@@ -17,7 +17,7 @@
   </div>
   <div class="footer">
     <button mat-button class="align-right">Cancel</button>
-    <button mat-stroked-button>Save as a draft</button>
-    <button mat-raised-button color="primary">Complete Order</button>
+    <button mat-stroked-button [disabled]="!appValidity">Save as a draft</button>
+    <button mat-raised-button color="primary" [disabled]="!appValidity">Complete Order</button>
   </div>
 </div>

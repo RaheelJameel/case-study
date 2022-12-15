@@ -22,10 +22,6 @@ export class ProductsTableComponent {
   columnsToDisplay = ['nameSku', 'newQuantity', 'newCost', 'taxCode'];
   columnsToDisplayWithExpand = ['expand', ...this.columnsToDisplay, 'delete'];
 
-  log(...data: any[]) {
-    console.log(...data);
-  }
-
   deleteProduct(productListing: ProductListing) {
     this.delete.emit(productListing);
   }

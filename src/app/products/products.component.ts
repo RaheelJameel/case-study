@@ -39,7 +39,6 @@ export class ProductsComponent implements OnInit, OnDestroy {
   }
 
   selectProduct(product: Product) {
-    console.log('ProductsComponent selectProduct called with product: ', product);
     this.productsService.addProductToSelection(product);
   }
 

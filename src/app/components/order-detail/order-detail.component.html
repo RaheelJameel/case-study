@@ -1,16 +1,16 @@
-<form class="example-form">
+<form *ngIf="formGroup" class="example-form" [formGroup]="formGroup">
   <h3>Order Details</h3>
 
   <mat-form-field class="example-full-width">
-    <input matInput placeholder="Supplier Name" />
+    <input matInput placeholder="*Supplier Name" formControlName="name" />
   </mat-form-field>
 
   <mat-form-field class="example-full-width">
-    <input matInput placeholder="Location" />
+    <input matInput placeholder="*Location" formControlName="location" />
   </mat-form-field>
 
   <mat-form-field class="example-full-width">
-    <input matInput placeholder="Supplier Invoice Number" />
+    <input matInput placeholder="Supplier Invoice Number" formControlName="invoiceNumber" />
   </mat-form-field>
 
   <mat-form-field class="example-full-width">
@@ -21,6 +21,7 @@
       cdkAutosizeMinRows="3"
       placeholder="Notes"
       maxlength="200"
+      formControlName="notes"
     ></textarea>
     <mat-hint align="end">{{ notesTextArea.value.length }} / 200</mat-hint>
   </mat-form-field>

@@ -5,6 +5,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 
 import { Product, ProductsCosting, ProductListing, ProductListingFormGroup, ProductComputedValues } from './products.interface';
 import { uuid } from '../shared/helpers';
+import { CoreService } from '../core.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,13 +22,13 @@ export class ProductsService {
   constructor(
     private http: HttpClient,
     private fb: FormBuilder,
+    private coreService: CoreService,
   ) {
     this.watchFormArrayChange();
   }
 
   watchFormArrayChange() {
     this.productListingsFormArray.valueChanges.subscribe((formGroupValues: ProductListingFormGroup[]) => {
-      console.log('this.productListingsFormArray.valueChanges.subscribe value: ', formGroupValues);
       let finalTotalCostWOTax = 0;
       let finalTaxAmount = 0;
       let finalTotalCostWTax = 0;
@@ -49,6 +50,8 @@ export class ProductsService {
       this.finalCosting.totalCostWOTax = finalTotalCostWOTax;
       this.finalCosting.taxAmount = finalTaxAmount;
       this.finalCosting.totalCostWTax = finalTotalCostWTax;
+
+      this.coreService.updateProductListingValidity(!!this.productListings.length && this.productListingsFormArray.valid);
     });
   }
 
